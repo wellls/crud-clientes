@@ -15,7 +15,7 @@ public class ControllerExceptionHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomError> internalServerError(Exception e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
-        CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+        CustomError err = new CustomError(Instant.now(), status.value(), "Internal Server Error", request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 }
