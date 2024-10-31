@@ -3,6 +3,7 @@ package com.github.wellls.clients.services;
 import com.github.wellls.clients.dto.ClientDTO;
 import com.github.wellls.clients.entities.Client;
 import com.github.wellls.clients.repositories.ClientRepository;
+import com.github.wellls.clients.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +19,14 @@ public class ClientService  {
     public Page<ClientDTO> findAll(Pageable pageable) {
         Page<Client> clients = repository.findAll(pageable);
         return clients.map(client -> new ClientDTO(client));
+    }
+
+    @Transactional(readOnly = true)
+    public ClientDTO findById(Long id) {
+        Client client = repository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException());
+
+        return new ClientDTO(client);
     }
 
 }
