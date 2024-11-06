@@ -1,14 +1,20 @@
 package com.github.wellls.clients.dto;
 
 import com.github.wellls.clients.entities.Client;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
 
 import java.time.LocalDate;
 
 public class ClientDTO {
     private Long id;
+
+    @NotBlank(message = "required field")
     private String name;
     private String cpf;
     private Double income;
+
+    @PastOrPresent(message = "the birthdate cannot be in the future")
     private LocalDate birthDate;
     private Integer children;
 

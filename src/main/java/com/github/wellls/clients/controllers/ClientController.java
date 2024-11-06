@@ -2,6 +2,7 @@ package com.github.wellls.clients.controllers;
 
 import com.github.wellls.clients.dto.ClientDTO;
 import com.github.wellls.clients.services.ClientService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,8 +32,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto) {
-        System.out.println("DTOOOO" + dto.getBirthDate());
+    public ResponseEntity<ClientDTO> insert(@Valid @RequestBody ClientDTO dto) {
         ClientDTO client = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(client.getId())
