@@ -32,6 +32,14 @@ public class ClientService  {
     }
 
     @Transactional
+    public ClientDTO insert(ClientDTO dto) {
+        Client client = new Client();
+        this.copyDtoToEntity(dto, client);
+        client = repository.save(client);
+        return new ClientDTO(client);
+    }
+
+    @Transactional
     public void delete(Long id) {
         if (!repository.existsById(id)) {
             throw new ResourceNotFoundException();
@@ -43,5 +51,13 @@ public class ClientService  {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException("Referential integrity violation while deleting resource with id " + id);
         }
+    }
+
+    private void copyDtoToEntity(ClientDTO dto, Client client) {
+        client.setName(dto.getName());
+        client.setCpf(dto.getCpf());
+        client.setChildren(dto.getChildren());
+        client.setIncome(dto.getIncome());
+        client.setBirthDate(dto.getBirthDate());
     }
 }

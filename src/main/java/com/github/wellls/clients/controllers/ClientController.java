@@ -7,6 +7,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 
 @RestController
@@ -25,6 +28,16 @@ public class ClientController {
     public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
         ClientDTO client = service.findById(id);
         return ResponseEntity.ok(client);
+    }
+
+    @PostMapping
+    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto) {
+        System.out.println("DTOOOO" + dto.getBirthDate());
+        ClientDTO client = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(client.getId())
+                .toUri();
+        return ResponseEntity.created(uri).body(client);
     }
 
     @DeleteMapping(value = "/{id}")
