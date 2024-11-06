@@ -5,6 +5,7 @@ import com.github.wellls.clients.entities.Client;
 import com.github.wellls.clients.repositories.ClientRepository;
 import com.github.wellls.clients.services.exceptions.DatabaseException;
 import com.github.wellls.clients.services.exceptions.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -37,6 +38,18 @@ public class ClientService  {
         this.copyDtoToEntity(dto, client);
         client = repository.save(client);
         return new ClientDTO(client);
+    }
+
+    @Transactional
+    public ClientDTO update(Long id, ClientDTO dto) {
+        try {
+            Client client = repository.getReferenceById(id);
+            this.copyDtoToEntity(dto, client);
+            client = repository.save(client);
+            return new ClientDTO(client);
+        } catch (EntityNotFoundException e) {
+            throw new ResourceNotFoundException();
+        }
     }
 
     @Transactional

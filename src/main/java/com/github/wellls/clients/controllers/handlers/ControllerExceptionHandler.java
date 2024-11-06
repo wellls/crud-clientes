@@ -15,7 +15,6 @@ import java.time.Instant;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<CustomError> internalServerError(Exception e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
